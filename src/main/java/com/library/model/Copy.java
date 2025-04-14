@@ -10,6 +10,5 @@ import java.time.LocalDate;
 public class Copy {
     private int copyId;
     private int bookId;
-    private LocalDate purchaseDate;
     private String status; // "Available", "Checked Out", "Reading Room"
 }
