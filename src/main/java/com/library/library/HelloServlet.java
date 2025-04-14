@@ -1,7 +1,9 @@
 package com.library.library;
 
 import java.io.*;
+import java.sql.Connection;
 
+import com.library.util.DBConnection;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -14,10 +16,21 @@ public class HelloServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+        String message = "hello world";
+        try {
+            Connection connection = DBConnection.getConnection();
+            if (connection != null) {
+                message = "Connection successful";
+            }
+            else {
+                message = "Connection failed";
+            }
+        } catch (Exception e) {
+            message = "Error while connecting to db: " + e.getStackTrace().toString();
+        }
 
-        // Hello
         PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
         out.println("<html><body>");
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
