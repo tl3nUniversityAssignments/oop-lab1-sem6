@@ -14,5 +14,9 @@ public class Loan {
     private LocalDate loanDate;
     private LocalDate dueDate;
     private LocalDate returnDate;
-    private String loanType; // "Loan", "Reading Room"
+    private LoanStatus status;
+
+    public enum LoanStatus {
+        RETURNED, CHECKED_OUT, READING_ROOM
+    }
 }
