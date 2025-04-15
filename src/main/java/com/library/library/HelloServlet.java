@@ -2,8 +2,11 @@ package com.library.library;
 
 import java.io.*;
 import java.sql.Connection;
+import java.util.List;
 
+import com.library.model.Book;
 import com.library.util.DBConnection;
+import com.library.dao.BookDAO;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -17,8 +20,9 @@ public class HelloServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String message = "hello world";
-        try {
-            Connection connection = DBConnection.getConnection();
+        Connection connection = null;
+        try{
+            connection = DBConnection.getConnection();
             if (connection != null) {
                 message = "Connection successful";
             }
@@ -29,10 +33,13 @@ public class HelloServlet extends HttpServlet {
             message = "Error while connecting to db: " + e.getStackTrace().toString();
         }
 
+        BookDAO bookDAO = new BookDAO(connection);
+        List<Book> books = bookDAO.getAll();
+
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
         out.println("<html><body>");
-        out.println("<h1>" + message + "</h1>");
+        out.println("<h1>" + books + "</h1>");
         out.println("</body></html>");
     }
 
