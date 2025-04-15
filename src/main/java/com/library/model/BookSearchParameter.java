@@ -1,5 +1,8 @@
 package com.library.model;
 
+import lombok.Getter;
+
+@Getter
 public enum BookSearchParameter {
     BOOK_ID("book_id"),
     TITLE("title"),
@@ -12,7 +15,4 @@ public enum BookSearchParameter {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

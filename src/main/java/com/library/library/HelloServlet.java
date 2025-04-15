@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.library.model.Book;
+import com.library.model.BookSearchParameter;
 import com.library.util.DBConnection;
 import com.library.dao.BookDAO;
 import jakarta.servlet.http.*;
@@ -34,7 +35,7 @@ public class HelloServlet extends HttpServlet {
         }
 
         BookDAO bookDAO = new BookDAO(connection);
-        List<Book> books = bookDAO.getAll();
+        List<Book> books = bookDAO.getBy(BookSearchParameter.TITLE, "The Hobbit");
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
