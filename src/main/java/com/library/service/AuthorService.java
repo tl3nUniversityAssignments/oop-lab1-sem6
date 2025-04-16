@@ -28,14 +28,17 @@ public class AuthorService {
     }
 
     public List<Author> getAll() {
+        log.info("Getting all authors");
         return dao.getAll();
     }
 
     public List<Author> getById(int authorId) {
+        log.info("Getting author by id {}", authorId);
         return dao.getBy(AuthorSearchParameter.AUTHOR_ID, authorId);
     }
 
     public List<Author> getByName(String name) {
+        log.info("Getting author by name {}", name);
         return dao.getBy(AuthorSearchParameter.NAME, name);
     }
 
@@ -45,10 +48,12 @@ public class AuthorService {
         }
 
         dao.update(author);
+        log.info("Updated author {}", author);
         return author;
     }
 
     public void delete(int authorId) {
         dao.delete(authorId);
+        log.info("Deleted author with id {}", authorId);
     }
 }
