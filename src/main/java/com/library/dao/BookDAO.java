@@ -18,7 +18,7 @@ public class BookDAO {
     }
 
     public int create(Book book) {
-        int affectedRows = 0;
+        int createdId = -1;
         String sql = "INSERT INTO books (title, isbn, publication_year) VALUES (?, ?, ?)";
 
         try(PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -26,12 +26,15 @@ public class BookDAO {
             ps.setString(2, book.getIsbn());
             ps.setInt(3, book.getPublicationYear());
 
-            affectedRows = ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                createdId = result.getInt("book_id");
+            }
         } catch (SQLException e) {
             log.error("SQLException while CREATING BOOK: {}", String.valueOf(e));
         }
 
-        return affectedRows;
+        return createdId;
     }
 
     public List<Book> getAll() {
