@@ -18,17 +18,20 @@ public class AuthorDAO {
     }
 
     public int create(Author author) {
-        int affectedRows = 0;
+        int createdId = -1;
         String sql = "INSERT INTO authors (name) VALUES (?)";
 
         try(PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, author.getName());
-            affectedRows = ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            while(result.next()) {
+                createdId = result.getInt("author_id");
+            }
         } catch (SQLException e) {
             log.error("SQLException while CREATING AUTHOR {}: {}", author.toString(), String.valueOf(e));
         }
 
-        return affectedRows;
+        return createdId;
     }
 
     public List<Author> getAll() {
