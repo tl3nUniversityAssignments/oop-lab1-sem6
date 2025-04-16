@@ -2,6 +2,7 @@ package com.library.dao;
 
 import com.library.model.Reader;
 import com.library.model.ReaderSearchParameter;
+import com.library.util.DBConnection;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.*;
@@ -12,8 +13,8 @@ import java.util.List;
 public class ReaderDAO {
     private final Connection conn;
 
-    ReaderDAO(Connection conn) {
-        this.conn = conn;
+    ReaderDAO() {
+        this.conn = DBConnection.getConnection();
     }
 
     public int create(Reader reader) {

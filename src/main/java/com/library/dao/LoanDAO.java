@@ -3,6 +3,7 @@ package com.library.dao;
 import com.library.model.Loan;
 import com.library.model.LoanSearchParameter;
 import com.library.model.LoanStatus;
+import com.library.util.DBConnection;
 import lombok.extern.log4j.Log4j2;
 
 import javax.xml.transform.Result;
@@ -14,8 +15,8 @@ import java.util.List;
 public class LoanDAO {
     private final Connection conn;
 
-    public LoanDAO(Connection conn) {
-        this.conn = conn;
+    public LoanDAO() {
+        this.conn = DBConnection.getConnection();
     }
 
     public int create(Loan loan) {

@@ -2,6 +2,7 @@ package com.library.dao;
 
 import com.library.model.Book;
 import com.library.model.BookSearchParameter;
+import com.library.util.DBConnection;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.*;
@@ -12,8 +13,8 @@ import java.util.List;
 public class BookDAO {
     private final Connection conn;
 
-    public BookDAO(Connection conn) {
-        this.conn = conn;
+    public BookDAO() {
+        this.conn = DBConnection.getConnection();
     }
 
     public int create(Book book) {

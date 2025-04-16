@@ -11,10 +11,10 @@ import java.util.List;
 
 @Log4j2
 public class AuthorDAO {
-    Connection conn = DBConnection.getConnection();
+    private final Connection conn;
 
-    public AuthorDAO(Connection conn) {
-        this.conn = conn;
+    public AuthorDAO() {
+        this.conn = DBConnection.getConnection();
     }
 
     public int create(Author author) {
