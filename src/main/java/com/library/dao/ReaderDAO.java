@@ -13,12 +13,12 @@ import java.util.List;
 public class ReaderDAO {
     private final Connection conn;
 
-    ReaderDAO() {
+    public ReaderDAO() {
         this.conn = DBConnection.getConnection();
     }
 
     public int create(Reader reader) {
-        int affectedRows = 0;
+        int createdId = -1;
         String sql = "INSERT INTO readers (name, address, phone, email) VALUES (?, ?, ?, ?)";
 
         try(PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -27,12 +27,15 @@ public class ReaderDAO {
             ps.setString(3, reader.getPhone());
             ps.setString(4, reader.getEmail());
 
-            affectedRows = ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            while(result.next()) {
+                createdId = result.getInt("reader_id");
+            }
         } catch(SQLException e) {
             log.error("SQLException while CREATING READER {}: {}", reader.toString(), String.valueOf(e));
         }
 
-        return affectedRows;
+        return createdId;
     }
 
     public List<Reader> getAll() {
