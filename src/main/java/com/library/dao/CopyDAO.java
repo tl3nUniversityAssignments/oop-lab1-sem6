@@ -18,19 +18,22 @@ public class CopyDAO {
     }
 
     public int create(Copy copy) {
-        int affectedRows = 0;
+        int createdId = -1;
         String sql = "INSERT INTO copies (book_id, available) VALUES (?, ?)";
 
         try(PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, copy.getBookId());
             ps.setBoolean(2, copy.isAvailable());
 
-            affectedRows = ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            while(result.next()) {
+                createdId = result.getInt("copy_id");
+            }
         } catch (SQLException e) {
             log.error("SQLException while CREATING COPY {}: {}", copy.toString(), String.valueOf(e));
         }
 
-        return affectedRows;
+        return createdId;
     }
 
     public List<Copy> getAll() {
