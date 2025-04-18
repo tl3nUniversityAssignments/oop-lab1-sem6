@@ -20,7 +20,7 @@ public class LoanDAO {
     }
 
     public int create(Loan loan) {
-        int affectedRows = 0;
+        int createdId = 0;
         String sql = "INSERT INTO loans (copy_id, reader_id, loan_date, due_date, return_date, status) VALUES (?, ?, ?, ?, ?, ?)";
 
         try(PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -31,12 +31,15 @@ public class LoanDAO {
             ps.setDate(5, loan.getReturnDate());
             ps.setString(6, loan.getStatus().getName());
 
-            affectedRows = ps.executeUpdate();
+            ResultSet result = ps.executeQuery();
+            while(result.next()) {
+                createdId = result.getInt("loan_id");
+            }
         } catch(SQLException e) {
             log.error("SQLException while CREATING LOAN {}: {}", loan.toString(), String.valueOf(e));
         }
 
-        return affectedRows;
+        return createdId;
     }
 
     public List<Loan> getAll() {
