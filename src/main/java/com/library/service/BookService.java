@@ -1,10 +1,13 @@
 package com.library.service;
 
+import com.library.dao.BookAuthorDAO;
 import com.library.dao.BookDAO;
-import com.library.model.Book;
-import com.library.model.BookSearchParameter;
+import com.library.dto.BookDTO;
+import com.library.mapper.BookMapper;
+import com.library.model.*;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -54,6 +57,28 @@ public class BookService {
     public List<Book> getByPublicationYear(int publicationYear) {
         log.info("Getting book by publication year {}", publicationYear);
         return dao.getBy(BookSearchParameter.PUBLISHED_YEAR, publicationYear);
+    }
+
+    public List<Book> getAvailable() {
+        CopyService copyService = new CopyService();
+        List<Copy> copies = copyService.getByAvailability(true);
+        List<Book> books = new ArrayList<>();
+
+        copies.forEach(copy -> {
+           Book book = (getById(copy.getBookId())).getFirst();
+           books.add(book);
+        });
+
+        return books;
+    }
+
+    public static BookDTO getBookDTO(Book book) {
+        BookAuthorService bookAuthorService = new BookAuthorService();
+
+        List<Author> authors = bookAuthorService.getAuthorsOfBook(book.getBookId());
+        List<String> authorNames = authors.stream().map(Author::getName).toList();
+
+        return BookMapper.INSTANCE.toDTO(book, authorNames);
     }
 
     // provide nulls if don't want to change
