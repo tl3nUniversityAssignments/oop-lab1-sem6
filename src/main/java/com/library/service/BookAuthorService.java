@@ -55,6 +55,11 @@ public class BookAuthorService {
         return authors;
     }
 
+    public List<String> getAuthorNames(int bookId) {
+        List<Author> authors = getAuthorsOfBook(bookId);
+        return authors.stream().map(Author::getName).toList();
+    }
+
     public void deleteAuthorFromBook(BookAuthor bookAuthor) {
         dao.delete(bookAuthor);
     }

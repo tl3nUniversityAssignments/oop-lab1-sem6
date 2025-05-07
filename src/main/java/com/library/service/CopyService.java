@@ -47,6 +47,11 @@ public class CopyService {
         return dao.getBy(CopySearchParameter.AVAILABLE, available);
     }
 
+    public int getNumberOfAvailableCopiesForBook(int bookId) {
+        List<Copy> copiesForBook = getByBookId(bookId);
+        return copiesForBook.stream().filter(Copy::isAvailable).toList().size();
+    }
+
     public Copy update(Copy copy, boolean available) {
         copy.setAvailable(available);
         dao.update(copy);

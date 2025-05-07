@@ -18,5 +18,6 @@ public interface BookMapper {
     @Mapping(source = "book.isbn", target = "isbn")
     @Mapping(source = "book.publicationYear", target = "publicationYear")
     @Mapping(source = "authorNames", target = "authorNames")
-    BookDTO toDTO(Book book, List<String> authorNames);
+    @Mapping(source = "availableCopies", target = "availableCopies")
+    BookDTO toDTO(Book book, List<String> authorNames, int availableCopies);
 }

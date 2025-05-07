@@ -6,7 +6,6 @@ import com.library.model.LoanStatus;
 import com.library.util.DBConnection;
 import lombok.extern.log4j.Log4j2;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class LoanDAO {
             log.error("SQLException while CREATING LOAN {}: {}", loan.toString(), String.valueOf(e));
         }
 
-        return createdId;
+        return createdId;   
     }
 
     public List<Loan> getAll() {
@@ -57,7 +56,7 @@ public class LoanDAO {
                         .loanDate(result.getDate("loan_date"))
                         .dueDate(result.getDate("due_date"))
                         .returnDate(result.getDate("return_date"))
-                        .status(LoanStatus.valueOf(result.getString("status")))
+                        .status(LoanStatus.fromName(result.getString("status")))
                         .build();
 
                 loans.add(loan);

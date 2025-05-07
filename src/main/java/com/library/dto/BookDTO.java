@@ -12,4 +12,5 @@ public class BookDTO {
     private String isbn;
     private int publicationYear;
     private List<String> authorNames;
+    private int availableCopies;
 }

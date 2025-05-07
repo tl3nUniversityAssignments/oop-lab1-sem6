@@ -1,9 +1,9 @@
 package com.library.service;
 
 import com.library.dao.LoanDAO;
-import com.library.model.Loan;
-import com.library.model.LoanSearchParameter;
-import com.library.model.LoanStatus;
+import com.library.dto.LoanDTO;
+import com.library.mapper.LoanMapper;
+import com.library.model.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.sql.Date;
@@ -70,6 +70,19 @@ public class LoanService {
     public List<Loan> getByStatus(LoanStatus status) {
         log.info("Getting loans by status {}", status.getName());
         return dao.getBy(LoanSearchParameter.STATUS, status.getName());
+    }
+
+    public static LoanDTO getDTO(Loan loan) {
+        CopyService copyService = new CopyService();
+        BookService bookService = new BookService();
+        BookAuthorService bookAuthorService = new BookAuthorService();
+        ReaderService readerService = new ReaderService();
+
+        Book book = bookService.getById(copyService.getById(loan.getCopyId()).getFirst().getBookId()).getFirst();
+        List<String> authorNames = bookAuthorService.getAuthorNames(book.getBookId());
+        Reader reader = readerService.getById(loan.getReaderId()).getFirst();
+
+        return LoanMapper.INSTANCE.toDTO(book.getTitle(), authorNames, reader.getName(), loan, loan.getStatus().getName());
     }
 
     public Loan update(Loan loan, Date returnDate, LoanStatus status) {

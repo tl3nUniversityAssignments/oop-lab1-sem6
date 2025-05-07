@@ -1,8 +1,8 @@
 package com.library.controller;
 
 import com.google.gson.Gson;
-import com.library.dto.BookDTO;
-import com.library.service.BookService;
+import com.library.dto.LoanDTO;
+import com.library.service.LoanService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,20 +12,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "bookServlet", value = "/books")
-public class BookServlet extends HttpServlet {
+@WebServlet(name="loanServlet", value = "/loans")
+public class LoansServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        BookService bookService = new BookService();
-        List<BookDTO> books = bookService.getAll().stream().map(BookService::getBookDTO).toList();
+        LoanService loanService = new LoanService();
+        List<LoanDTO> loans = loanService.getAll().stream().map(LoanService::getDTO).toList();
 
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
         Gson gson = new Gson();
-        String jsonBooks = gson.toJson(books);
+        String jsonLoans = gson.toJson(loans);
 
         PrintWriter out = res.getWriter();
-        out.println(jsonBooks);
+        out.println(jsonLoans);
         out.flush();
     }
 }

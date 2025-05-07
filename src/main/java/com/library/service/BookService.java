@@ -59,26 +59,14 @@ public class BookService {
         return dao.getBy(BookSearchParameter.PUBLISHED_YEAR, publicationYear);
     }
 
-    public List<Book> getAvailable() {
-        CopyService copyService = new CopyService();
-        List<Copy> copies = copyService.getByAvailability(true);
-        List<Book> books = new ArrayList<>();
-
-        copies.forEach(copy -> {
-           Book book = (getById(copy.getBookId())).getFirst();
-           books.add(book);
-        });
-
-        return books;
-    }
-
     public static BookDTO getBookDTO(Book book) {
         BookAuthorService bookAuthorService = new BookAuthorService();
+        List<String> authorNames = bookAuthorService.getAuthorNames(book.getBookId());
 
-        List<Author> authors = bookAuthorService.getAuthorsOfBook(book.getBookId());
-        List<String> authorNames = authors.stream().map(Author::getName).toList();
+        CopyService copyService = new CopyService();
+        int availableCopies = copyService.getNumberOfAvailableCopiesForBook(book.getBookId());
 
-        return BookMapper.INSTANCE.toDTO(book, authorNames);
+        return BookMapper.INSTANCE.toDTO(book, authorNames, availableCopies);
     }
 
     // provide nulls if don't want to change

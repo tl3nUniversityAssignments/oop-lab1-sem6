@@ -17,7 +17,7 @@ public class CORSInterceptorFilter implements Filter {
 
         String requestOrigin = httpRequest.getHeader("Origin");
         String allowedOrigin = "http://localhost:3000";
-        if (requestOrigin.equals(allowedOrigin)) {
+        if ( requestOrigin == null ||requestOrigin.equals(allowedOrigin)) {
             httpResponse.addHeader("Access-Control-Allow-Origin", requestOrigin);
             httpResponse.addHeader("Access-Control-Allow-Headers", "*");
             httpResponse.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST, DELETE");
